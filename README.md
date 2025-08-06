@@ -1,6 +1,83 @@
 This project demonstrates data cleaning, aggregation, and visualization for sales order data using Java and CSV files, with a focus on realistic “dirty” data and robust annotation-driven transformation.
 
-# Approach
+# Approaches
+This project can be adapted to different ways of reading and processing data, each with unique benefits and drawbacks:
+
+## 1. Direct Read the Whole File
+Description:
+Read the entire data file into memory at once, process it as needed.
+
+Pros:
+
+Simple to implement and debug
+
+Fast for small to medium datasets that fit in RAM
+
+No complex threading or chunk logic
+
+Cons:
+
+Not scalable for very large datasets (can cause OutOfMemoryError)
+
+High memory consumption
+
+## 2. Read File in Chunks Using Threads
+Description:
+Read and process the file in chunks (e.g., lines or blocks), possibly in parallel threads.
+
+Pros:
+
+Allows much larger files to be processed (constant memory usage)
+
+Can improve speed via multi-threading, especially on multi-core systems
+
+Good for streaming or partial processing scenarios
+
+Cons:
+
+More complex code (threading, synchronization, error handling)
+
+Order of output may be non-deterministic if not carefully managed
+
+Potential for race conditions or thread-safety issues
+
+## 3. Process Cleaned Data In-Memory
+Description:
+After cleaning, load and process all data in Java collections/structures in memory.
+
+Pros:
+
+Immediate, high-speed analytics and filtering on small datasets
+
+Flexibility in further in-memory computations after cleaning
+
+Cons:
+
+Limited by available JVM memory; not suitable for very large datasets
+
+Entire pipeline must finish before results are available
+
+## 4. Store Cleaned Data in OLAP DB, Then Process for Analytical Tables
+Description:
+Output cleaned records into an OLAP database (e.g., DuckDB), then use SQL to produce pre-aggregated analytical tables.
+
+Pros:
+
+Scalable: can process much larger data using disk-based DB
+
+Enables powerful SQL/OLAP analytics, advanced aggregations, window functions, etc.
+
+Analytical tables can be exported to CSV for downstream processing or visualizations
+
+Cons:
+
+Requires DB knowledge and extra setup (install, connect, etc.)
+
+ETL pipeline slightly more complex (write, then query from DB)
+
+Some latency from intermediate persistence before analysis
+
+# Used Approach
 ## 1. Raw Data Simulation & Real-World Error
 Raw order data is randomly generated with intentional typos, missing values, and variable date formats to simulate real-world “messy” business data.
 
