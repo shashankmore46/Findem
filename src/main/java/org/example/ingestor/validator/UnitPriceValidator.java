@@ -2,12 +2,12 @@ package org.example.ingestor.validator;
 
 import org.example.exception.ValidationException;
 
-public class QuantityValidator implements FieldValidator {
+public class UnitPriceValidator implements FieldValidator {
     @Override
     public void validate(Object value) throws ValidationException {
-        int v = Integer.parseInt(value.toString());
+        float v = Float.parseFloat(value.toString());
         if (v < 0) {
-            throw new ValidationException("Quantity must non negative.");
+            throw new ValidationException("Unit price must non negative.");
         }
     }
 }

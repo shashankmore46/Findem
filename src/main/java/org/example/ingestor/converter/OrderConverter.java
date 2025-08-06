@@ -1,14 +1,19 @@
-package org.example.ingestor.tranformer;
+package org.example.ingestor.converter;
 
 import org.example.model.Order;
 import org.example.model.RawOrder;
 
-public class OrderTransformer implements Transform<RawOrder, Order> {
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import static org.example.constants.Constants.STANDARD_DATE_FORMAT;
+
+public class OrderConverter implements Converter<RawOrder, Order> {
     @Override
-    public Order transform(RawOrder from) {
+    public Order convert(RawOrder from) {
         int quantity = Integer.parseInt(from.getQuantity());
-        float unitPrice = from.getUnitPrice();
-        float discount = from.getDiscountPercent();
+        float unitPrice = Float.parseFloat(from.getUnitPrice());
+        float discount = Float.parseFloat(from.getDiscountPercent());
         float revenue = (float) (quantity * unitPrice * (1.0 - discount));
         return new Order(
                 from.getOrderId(),
@@ -18,7 +23,7 @@ public class OrderTransformer implements Transform<RawOrder, Order> {
                 unitPrice,
                 discount,
                 from.getRegion(),
-                from.getSaleDate(),
+                LocalDate.parse(from.getSaleDate(), DateTimeFormatter.ofPattern(STANDARD_DATE_FORMAT)),
                 from.getCustomerEmail(),
                 revenue
         );

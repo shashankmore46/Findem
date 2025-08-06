@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +17,7 @@ public class Order {
     private float unitPrice;
     private float discountPercent;
     private String region;
-    private String saleDate;
+    private LocalDate saleDate;
     private String customerEmail;
     private float revenue;
 }

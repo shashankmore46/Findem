@@ -5,23 +5,37 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.ingestor.validator.QuantityValidator;
-import org.example.ingestor.validator.Validator;
+import org.example.ingestor.validator.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RawOrder {
+    @Validator(handler = StringValidator.class)
     private String orderId;
+
+    @Validator(handler = StringValidator.class)
     private String productName;
+
+    @Validator(handler = StringValidator.class)
     private String category;
 
     @Validator(handler = QuantityValidator.class)
     private String quantity;
-    private Float unitPrice;
-    private Float discountPercent;
+
+    @Validator(handler = UnitPriceValidator.class)
+    private String unitPrice;
+
+    @Validator(handler = DiscountPercentValidator.class)
+    private String discountPercent;
+
+    @Validator(handler = StringValidator.class)
     private String region;
+
+    @Validator(handler = DateValidator.class)
     private String saleDate;
+
+    @Validator(handler = EmailValidator.class)
     private String customerEmail;
 }
