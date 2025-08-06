@@ -1,5 +1,33 @@
 This project demonstrates data cleaning, aggregation, and visualization for sales order data using Java and CSV files, with a focus on realistic “dirty” data and robust annotation-driven transformation.
 
+## Instructions
+1. Clone the master branch.
+2. Install Java 8 or higher.
+3. Run java -version to confirm installation.
+4. Open the project in any Java IDE (e.g., IntelliJ, Eclipse, VS Code).
+5. Navigate to org.example.Main::main (the main method in Main.java).
+6. Now make sure to follow all the steps from 7 to 10 as it is.
+7. Generate sample data:
+   - Uncomment ONLY line 22.
+   - Run main().
+   - This will create a raw orders CSV file containing 1 million raw orders.
+   - Comment line 22 back.
+8. Ingest data into DB:
+   - Uncomment ONLY line 23.
+   - Run main().
+   - This will ingest the created raw orders CSV into the database.
+   - Comment line 23 back.
+9. Analyze:
+   - Uncomment ONLY line 24.
+   - Run main().
+   - This will create the 6 analytical tables in the database.
+   - Comment line 24 back.
+10. Create dashboard:
+   - Uncomment ONLY line 25.
+   - Run main().
+   - This will create and open the dashboard in a new tab.
+   - Comment line 25 back.
+
 # Approaches
 This project can be adapted to different ways of reading and processing data, each with unique benefits and drawbacks:
 
@@ -162,3 +190,13 @@ Modularity: Every chart/table is a self-contained widget, easy to swap, test, or
 Lightweight & Portable: No web server required; pure Java and CSV for maximum run-anywhere simplicity.
 
 Testability: Comprehensive unit tests ensure that critical data transformation logic is robust to evolving requirements and new kinds of data errors.
+
+# Local Test Results
+1. Machine details:
+   - Processor: 12th Gen Intel(R) Core(TM) i7-12650H (16 CPUs), ~2.7GHz
+   - Memory: 16384MB RAM
+   - Disk type: SSD
+2. Sample data size: 1M
+   - Ingestion time: 1 mins 50 seconds
+   - Analyze time: 2 seconds
+   - dashboard creation time: 3 seconds
