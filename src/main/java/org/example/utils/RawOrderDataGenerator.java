@@ -26,7 +26,7 @@ public class RawOrderDataGenerator {
             ));
             writer.write("\n");
             for (int i = 0; i < count; i++) {
-                String orderId = "ORD" + (10000 + RANDOM.nextInt(90000));
+                String orderId = "ORD" + (10000 + RANDOM.nextInt(999999999 - 10000 + 1));
                 String productName = PRODUCT_NAMES[RANDOM.nextInt(PRODUCT_NAMES.length)];
                 String category = CATEGORIES[RANDOM.nextInt(CATEGORIES.length)];
                 String quantity = String.valueOf(RANDOM.nextInt(20) - 5); // -5 to 14, can be negative or zero

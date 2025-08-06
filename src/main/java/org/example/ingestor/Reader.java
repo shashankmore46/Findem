@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Reader extends Thread {
     private final File file;
@@ -46,8 +47,15 @@ public class Reader extends Thread {
             }
             System.out.println("Finished reading file: " + file.getName());
             workerPool.shutdown();
+            while (!workerPool.awaitTermination(10, TimeUnit.SECONDS)) {
+                System.out.println("Waiting for worker pool to finish...");
+            }
+            writer.shutdownAll();
+            System.out.println("All ingestion completed and writer threads shut down.");
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

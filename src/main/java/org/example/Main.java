@@ -8,10 +8,7 @@ import org.example.utils.CsvUtils;
 import org.example.utils.RawOrderDataGenerator;
 
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,8 +18,9 @@ import static org.example.constants.Constants.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-//        RawOrderDataGenerator.generateRawOrdersCsv("C:\\Users\\shash\\OneDrive\\Desktop\\Findem\\raw_orders.csv", 10000);
-//        ingest();
+//        String filePath = "C:\\Users\\shash\\OneDrive\\Desktop\\Findem\\raw_orders.csv";
+//        RawOrderDataGenerator.generateRawOrdersCsv(filePath, 1000000);
+//        ingest(10,100000);
 //        analyzeData();
 //        dashboard();
     }
@@ -53,7 +51,7 @@ public class Main {
         });
     }
 
-    static void ingest() throws InterruptedException, SQLException {
+    static void ingest(int numberOfWorkers, int chunkSize) throws InterruptedException, SQLException {
         try (Connection conn = DriverManager.getConnection(DB_URL);
              Statement stmt = conn.createStatement()) {
             stmt.execute("DROP TABLE IF EXISTS dirty_orders;");
@@ -82,12 +80,11 @@ public class Main {
                     "    revenue FLOAT NOT NULL\n" +
                     ");");
         }
-        ExecutorService workerPool = Executors.newFixedThreadPool(2);
+        ExecutorService workerPool = Executors.newFixedThreadPool(numberOfWorkers);
         Writer writer = new Writer();
         writer.createTableWriter(DIRTY_ORDERS);
         writer.createTableWriter(ORDERS);
-        new Reader("C:\\Users\\shash\\OneDrive\\Desktop\\Findem\\raw_orders.csv", workerPool, writer, 1000).start();
-        workerPool.awaitTermination(15, TimeUnit.MINUTES);
+        new Reader("C:\\Users\\shash\\OneDrive\\Desktop\\Findem\\raw_orders.csv", workerPool, writer, chunkSize).start();
     }
 
     static void analyzeData() throws SQLException {
