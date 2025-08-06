@@ -1,13 +1,14 @@
 package org.example.utils;
 
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVWriter;
+import com.opencsv.*;
 import org.example.model.RawOrder;
 
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.example.constants.Constants.DB_URL;
 
@@ -75,5 +76,18 @@ public class CsvUtils {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<String[]> readCsv(String filePath) throws Exception {
+        List<String[]> rows = new ArrayList<>();
+        try (CSVReader reader = new CSVReaderBuilder(new FileReader(filePath))
+                .withCSVParser(new CSVParserBuilder().withSeparator('|').build())
+                .build()) {
+            String[] data;
+            while ((data = reader.readNext()) != null) {
+                rows.add(data);
+            }
+        }
+        return rows;
     }
 }

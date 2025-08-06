@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.ingestor.cleaner.*;
 import org.example.ingestor.validator.*;
 
 @Data
@@ -16,9 +17,11 @@ public class RawOrder {
     private String orderId;
 
     @Validator(handler = StringValidator.class)
+    @Cleaner(handler = ProductCleaner.class)
     private String productName;
 
     @Validator(handler = StringValidator.class)
+    @Cleaner(handler = CategoryCleaner.class)
     private String category;
 
     @Validator(handler = QuantityValidator.class)
@@ -31,9 +34,11 @@ public class RawOrder {
     private String discountPercent;
 
     @Validator(handler = StringValidator.class)
+    @Cleaner(handler = RegionCleaner.class)
     private String region;
 
     @Validator(handler = DateValidator.class)
+    @Cleaner(handler = DateCleaner.class)
     private String saleDate;
 
     @Validator(handler = EmailValidator.class)

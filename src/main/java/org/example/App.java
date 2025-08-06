@@ -1,13 +1,17 @@
 package org.example;
 
+import org.example.dashboard.ModularDashboard;
+import org.example.dashboard.widget.*;
 import org.example.ingestor.Reader;
 import org.example.ingestor.Writer;
 import org.example.utils.CsvUtils;
 import org.example.utils.RawOrderDataGenerator;
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -132,7 +136,29 @@ public class App {
                 break;
             }
             case "dashboard": {
-                System.out.println("Dashboard feature is under development.");
+                List<DashboardWidget> widgets = List.of(
+                        new MonthlyRevenueWidget(),
+                        new TopProductsByRevenueWidget(),
+                        new TopProductsByUnitsWidget(),
+                        new SalesByRegionWidget(),
+                        new CategoryDiscountMapWidget(),
+                        new AnomalyRecordsWidget()
+                );
+                List<String> csvPaths = List.of(
+                        "monthly_sales_summary.csv",
+                        "top_products_by_revenue.csv",
+                        "top_products_by_units.csv",
+                        "region_wise_performance.csv",
+                        "category_discount_map.csv",
+                        "anomaly_records.csv"
+                );
+                SwingUtilities.invokeLater(() -> {
+                    try {
+                        new ModularDashboard(widgets, csvPaths);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
                 break;
             }
             default: {

@@ -1,5 +1,6 @@
 package org.example.ingestor;
 
+import org.example.ingestor.cleaner.AnnotationCleaner;
 import org.example.ingestor.converter.OrderConverter;
 import org.example.ingestor.validator.AnnotationValidator;
 import org.example.model.Order;
@@ -29,6 +30,7 @@ public class WorkerTask implements Runnable {
         for (RawOrder rawOrder : chunk) {
             try {
                 AnnotationValidator.validateFields(rawOrder);
+                AnnotationCleaner.cleanFields(rawOrder);
                 orders.add(orderConverter.convert(rawOrder));
             } catch (Exception ex) {
                 dirtyOrders.add(rawOrder);

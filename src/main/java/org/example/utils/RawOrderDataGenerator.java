@@ -6,17 +6,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
-public class RawOrderDataGenerator {
+import static org.example.constants.Constants.*;
 
-    private static final String[] PRODUCT_NAMES = {"TV", "T.V.", "Television", "Laptop", "Lap top", "Fridge", "Refrigerator"};
-    private static final String[] CATEGORIES = {"electronics", "home appliance", "elec", "appliance", "gadget"};
-    private static final String[] REGIONS = {"North", "nort", "South", "suth", "East", "Eest", "West", "Wst"};
-    private static final String[] EMAIL_DOMAINS = {"example.com", "test.org", "mail.com", "sample.net"};
-    private static final DateTimeFormatter[] DATE_FORMATS = {
-            DateTimeFormatter.ofPattern("yyyy-MM-dd"),
-            DateTimeFormatter.ofPattern("dd/MM/yyyy"),
-            DateTimeFormatter.ofPattern("MM-dd-yyyy")
-    };
+public class RawOrderDataGenerator {
     private static final Random RANDOM = new Random();
 
     public static void generateRawOrdersCsv(String filePath, int count) throws IOException {
@@ -46,7 +38,7 @@ public class RawOrderDataGenerator {
                 String saleDate = null;
                 if (RANDOM.nextDouble() > 0.15) { // 85% chance to have a date
                     LocalDate date = LocalDate.now().minusDays(RANDOM.nextInt(1000));
-                    DateTimeFormatter fmt = DATE_FORMATS[RANDOM.nextInt(DATE_FORMATS.length)];
+                    DateTimeFormatter fmt = DateTimeFormatter.ofPattern(SUPPORTED_DATE_FORMATS.get(RANDOM.nextInt(SUPPORTED_DATE_FORMATS.size())));
                     saleDate = date.format(fmt);
                 }
 
