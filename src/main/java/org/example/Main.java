@@ -18,9 +18,9 @@ import static org.example.constants.Constants.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-//        String filePath = "C:\\Users\\shash\\OneDrive\\Desktop\\Findem\\raw_orders.csv";
+//        String filePath = "raw_orders.csv";
 //        RawOrderDataGenerator.generateRawOrdersCsv(filePath, 1000000);
-//        ingest(10,100000);
+//        ingest(filePath,10,100000);
 //        analyzeData();
 //        dashboard();
     }
@@ -51,7 +51,7 @@ public class Main {
         });
     }
 
-    static void ingest(int numberOfWorkers, int chunkSize) throws InterruptedException, SQLException {
+    static void ingest(String filePath, int numberOfWorkers, int chunkSize) throws InterruptedException, SQLException {
         try (Connection conn = DriverManager.getConnection(DB_URL);
              Statement stmt = conn.createStatement()) {
             stmt.execute("DROP TABLE IF EXISTS dirty_orders;");
@@ -84,7 +84,7 @@ public class Main {
         Writer writer = new Writer();
         writer.createTableWriter(DIRTY_ORDERS);
         writer.createTableWriter(ORDERS);
-        new Reader("C:\\Users\\shash\\OneDrive\\Desktop\\Findem\\raw_orders.csv", workerPool, writer, chunkSize).start();
+        new Reader(filePath, workerPool, writer, chunkSize).start();
     }
 
     static void analyzeData() throws SQLException {
